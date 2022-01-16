@@ -21,9 +21,8 @@ class TasksCommand:
     def read_completed(self):
         try:
             file = open(self.COMPLETED_TASKS_FILE, "r")
-            lines = file.readlines()
+            self.completed_items = file.readlines()
             file.close()
-            return lines
         except Exception:
             pass
 
