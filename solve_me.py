@@ -162,30 +162,6 @@ $ python tasks.py runserver # Starts the tasks management server"""
             count+=1
         return content
 
-
-    def report(self):
-        print("Pending : " + str(len(self.current_items)))
-        count = 1
-        for i in (list(self.current_items.keys())):
-            print(f"{count}. {self.current_items[i]} [{i}]")
-            count+=1
-        
-        count = 1
-        print("\nCompleted : "+ str(len(self.completed_items)))
-        for i in (list(self.completed_items)):
-            print(f"{count}. {i}")
-            count+=1
-
-    def render_pending_tasks(self):
-        # Complete this method to return all incomplete tasks as HTML
-        content = "<h1> List of Pending Tasks are Here </h1>"
-        count = 1
-        for i in (list(self.current_items.keys())):
-            content += f"<h2>{count}. {self.current_items[i]} [{i}]</h2>"
-            count+=1
-        return content
-
-
 class TasksServer(TasksCommand, BaseHTTPRequestHandler):
     def do_GET(self):
         task_command_object = TasksCommand()
@@ -204,7 +180,7 @@ class TasksServer(TasksCommand, BaseHTTPRequestHandler):
 
 
 
-# UNCOMMENT to run the server
+# UNCOMMENT
 '''address = "127.0.0.1"
 port = 8000
 server_address = (address, port)
