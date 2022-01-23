@@ -77,27 +77,113 @@ $ python tasks.py runserver # Starts the tasks management server"""
         )
 
     def add(self, args):
-        pass  # Use your existing implementation
+        if (len(args)==0):
+            print("Error: Missing priority string. Nothing added!")
+        elif (len(args)==1):
+            print("Error: Missing task string. Nothing added!")
+        try:
+            if (int(args[0]) in list(self.current_items.keys())):
+                self.current_items[int(args[0])+1] = self.current_items[int(args[0])]
+            self.current_items[int(args[0])] = " ".join(args[1:])
+            self.write_current()
+            print('Added task: "' + " ".join(args[1:]) + '" with priority ' + (args[0]))
+        except Exception:
+            print("Error: Invalid priority number. Nothing added!")
+            pass
+
+
 
     def done(self, args):
-        pass  # Use your existing implementation
+        try:
+            if (int(args[0]) in list(self.current_items.keys())):
+                self.completed_items.append(self.current_items[int(args[0])])
+                self.write_completed()
+                del self.current_items[int(args[0])]
+                self.write_current()
+                print("Marked item as done.")
+            else:
+                print(f"Error: no incomplete item with priority {args[0]} exists.")
+                
+        except Exception:
+            print("Error: Invalid priority number. Nothing deleted!")
+            pass
+        
+
 
     def delete(self, args):
-        pass  # Use your existing implementation
+        try:
+            if (int(args[0]) in list(self.current_items.keys())):
+                del self.current_items[int(args[0])]
+                self.write_current()
+                print(f"Deleted item with priority {args[0]}")
+            else:
+                print(f"Error: item with priority {args[0]} does not exist. Nothing deleted.")
+        except Exception:
+            print("Error: Invalid priority number. Nothing deleted!")
+            pass
 
     def ls(self):
-        pass  # Use your existing implementation
+        count = 1
+        for i in (list(self.current_items.keys())):
+            print(f"{count}. {self.current_items[i]} [{i}]")
+            count+=1
+        
 
     def report(self):
-        pass  # Use your existing implementation
+        print("Pending : " + str(len(self.current_items)))
+        count = 1
+        for i in (list(self.current_items.keys())):
+            print(f"{count}. {self.current_items[i]} [{i}]")
+            count+=1
+        
+        count = 1
+        print("\nCompleted : "+ str(len(self.completed_items)))
+        for i in (list(self.completed_items)):
+            print(f"{count}. {i}")
+            count+=1
+
+
 
     def render_pending_tasks(self):
         # Complete this method to return all incomplete tasks as HTML
-        return "<h1> Show Incomplete Tasks Here </h1>"
+        content = "<h1> List of Pending Tasks are Here </h1>"
+        count = 1
+        for i in (list(self.current_items.keys())):
+            content += f"<h2>{count}. {self.current_items[i]} [{i}]</h2>"
+            count+=1
+        return content
 
     def render_completed_tasks(self):
         # Complete this method to return all completed tasks as HTML
-        return "<h1> Show Completed Tasks Here </h1>"
+        content = ""
+        count = 1
+        for i in (list(self.completed_items)):
+            content += f"<h2>{count}. {i}</h2>"
+            count+=1
+        return content
+
+
+    def report(self):
+        print("Pending : " + str(len(self.current_items)))
+        count = 1
+        for i in (list(self.current_items.keys())):
+            print(f"{count}. {self.current_items[i]} [{i}]")
+            count+=1
+        
+        count = 1
+        print("\nCompleted : "+ str(len(self.completed_items)))
+        for i in (list(self.completed_items)):
+            print(f"{count}. {i}")
+            count+=1
+
+    def render_pending_tasks(self):
+        # Complete this method to return all incomplete tasks as HTML
+        content = "<h1> List of Pending Tasks are Here </h1>"
+        count = 1
+        for i in (list(self.current_items.keys())):
+            content += f"<h2>{count}. {self.current_items[i]} [{i}]</h2>"
+            count+=1
+        return content
 
 
 class TasksServer(TasksCommand, BaseHTTPRequestHandler):
@@ -115,3 +201,13 @@ class TasksServer(TasksCommand, BaseHTTPRequestHandler):
         self.send_header("content-type", "text/html")
         self.end_headers()
         self.wfile.write(content.encode())
+
+
+
+# UNCOMMENT to run the server
+'''address = "127.0.0.1"
+port = 8000
+server_address = (address, port)
+httpd = HTTPServer(server_address, TasksServer)
+print(f"Started HTTP Server on http://{address}:{port}")
+httpd.serve_forever()'''
