@@ -89,7 +89,6 @@ $ python tasks.py runserver # Starts the tasks management server"""
                 self.current_items[current] = task
                 task = temp_task
                 current+=1
-                print(self.current_items)
             self.current_items[current] = task
             self.write_current()
             print('Added task: "' + " ".join(args[1:]) + '" with priority ' + (args[0]))
