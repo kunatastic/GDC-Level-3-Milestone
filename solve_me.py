@@ -82,9 +82,15 @@ $ python tasks.py runserver # Starts the tasks management server"""
         elif (len(args)==1):
             print("Error: Missing task string. Nothing added!")
         try:
-            if (int(args[0]) in list(self.current_items.keys())):
-                self.current_items[int(args[0])+1] = self.current_items[int(args[0])]
-            self.current_items[int(args[0])] = " ".join(args[1:])
+            current = int(args[0])
+            task = " ".join(args[1:])
+            while current in list(self.current_items.keys()):
+                temp_task = self.current_items[current]
+                self.current_items[current] = task
+                task = temp_task
+                current+=1
+                print(self.current_items)
+            self.current_items[current] = task
             self.write_current()
             print('Added task: "' + " ".join(args[1:]) + '" with priority ' + (args[0]))
         except Exception:
