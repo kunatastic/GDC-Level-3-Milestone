@@ -153,6 +153,7 @@ $ python tasks.py runserver # Starts the tasks management server"""
         # Complete this method to return all incomplete tasks as HTML
         content = "<h1> List of Pending Tasks are Here </h1>"
         count = 1
+        self.read_current()
         for i in (list(self.current_items.keys())):
             content += f"<h2>{count}. {self.current_items[i]} [{i}]</h2>"
             count+=1
@@ -160,8 +161,9 @@ $ python tasks.py runserver # Starts the tasks management server"""
 
     def render_completed_tasks(self):
         # Complete this method to return all completed tasks as HTML
-        content = ""
+        content = "<h1> List of Completed Tasks are Here </h1>"
         count = 1
+        self.read_completed()
         for i in (list(self.completed_items)):
             content += f"<h2>{count}. {i}</h2>"
             count+=1
@@ -186,9 +188,9 @@ class TasksServer(TasksCommand, BaseHTTPRequestHandler):
 
 
 # UNCOMMENT
-'''address = "127.0.0.1"
-port = 8000
-server_address = (address, port)
-httpd = HTTPServer(server_address, TasksServer)
-print(f"Started HTTP Server on http://{address}:{port}")
-httpd.serve_forever()'''
+# address = "127.0.0.1"
+# port = 8000
+# server_address = (address, port)
+# httpd = HTTPServer(server_address, TasksServer)
+# print(f"Started HTTP Server on http://{address}:{port}")
+# httpd.serve_forever()
